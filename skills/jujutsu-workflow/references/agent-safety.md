@@ -6,16 +6,23 @@ Everything here is mechanical and non-negotiable.
 
 ## 1. The pager will hang you
 
-Output commands page through `less` by default. Always either pass `--no-pager`
-or disable the pager once per environment:
+Output commands page through `less` by default. Pass `--no-pager` on every
+command that prints:
 
 ```bash
-jj config set --user ui.paginate never     # do this first, in any agent session
-# or, per command:
 jj --no-pager log
+jj --no-pager status
 ```
 
-`detect_jj_state.sh` reports `ui.paginate`; if it is unset, set it to `never`.
+**Do not disable the pager in the user's config.** `jj config set --user
+ui.paginate never` writes to their own config file, outlives the agent session,
+and silently changes how `jj` behaves when *they* run it interactively. The
+per-command flag is enough, and the environment is left as you found it. If you
+want the setting without touching any file, `jj --config ui.paginate=never <cmd>`
+applies it to that one invocation.
+
+`detect_jj_state.sh` reports `ui.paginate` so you know what the environment
+does. Unset is the normal case and is not something to fix — pass `--no-pager`.
 
 ## 2. Never invoke an editor/TUI form
 

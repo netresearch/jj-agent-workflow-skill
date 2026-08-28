@@ -38,8 +38,9 @@ All commands were run hands-on in real colocated repos. Corrections to R1:
 
 The #1 failure mode of jj-in-an-agent is **hanging on interactivity**. The skill MUST:
 
-- **FR-011 Non-interactive by default:** always `--no-pager` on output commands and
-  set `ui.paginate = never`; always `-m` for messages; **never** invoke editor/TUI
+- **FR-011 Non-interactive by default:** always `--no-pager` on output commands —
+  never by writing `ui.paginate` into the user's config, which outlives the session
+  and changes their interactive jj; always `-m` for messages; **never** invoke editor/TUI
   forms (`jj describe|commit|squash` without `-m`, bare `jj split`, `jj squash -i`,
   `jj resolve`, `jj diffedit`). Provide non-interactive substitutes (split by path,
   edit conflict markers directly).

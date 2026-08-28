@@ -112,7 +112,6 @@ Only when asked. In the repo root:
 
 ```bash
 jj git init            # colocated by default (adds .jj/ beside .git/)
-jj config set --user ui.paginate never
 ```
 
 Nothing about the Git side changes; `git log`/`git status` keep working.

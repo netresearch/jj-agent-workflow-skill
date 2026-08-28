@@ -118,6 +118,8 @@ claim "jj log --limit" "jj log --limit FAILED" jj --no-pager log --limit 3
 claim "jj diff --stat" "jj diff --stat FAILED" jj --no-pager diff --stat
 claim "jj diff --git" "jj diff --git FAILED" jj --no-pager diff --git
 claim "jj file list" "jj file list FAILED" jj --no-pager file list
+claim "jj --config NAME=VALUE" "jj --config NAME=VALUE FAILED" \
+  jj --config ui.paginate=never --no-pager status
 claim_bool "jj squash --from/--into" "jj squash --from/--into GONE" \
   "$(hasflag squash -- "--from" && hasflag squash -- "--into" && echo true || echo false)"
 claim_bool "jj rebase -d" "jj rebase -d GONE" "$(yn hasflag rebase -- "-d")"
