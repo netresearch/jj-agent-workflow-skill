@@ -32,7 +32,13 @@ case "${1:-}" in
     ;;
 esac
 
-have() { command -v "$1" >/dev/null 2>&1; }
+have() {
+  local cmd=$1
+  if command -v "$cmd" >/dev/null 2>&1; then
+    return 0
+  fi
+  return 1
+}
 
 git_root=""
 jj_root=""
@@ -47,7 +53,11 @@ wc_state="unknown"
 warning=""
 
 # Resolve a possibly-relative git path to a physical absolute path.
-abspath() { (cd "$1" 2>/dev/null && pwd -P) || true; }
+abspath() {
+  local path=$1
+  (cd "$path" 2>/dev/null && pwd -P) || true
+  return 0
+}
 
 # Escape a value for embedding in a JSON string. Paths may legally contain a
 # double quote or a backslash, which would otherwise emit unparseable --json.
@@ -58,6 +68,7 @@ json_escape() {
   s=${s//$'\r'/\\r}
   s=${s//$'\t'/\\t}
   printf '%s' "$s"
+  return 0
 }
 
 git_wt_dir=""
