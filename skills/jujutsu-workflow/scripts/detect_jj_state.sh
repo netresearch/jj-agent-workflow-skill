@@ -164,7 +164,7 @@ else
   echo "git_dir:         ${git_dir:-<none>}"
   echo "git_worktree:    $in_git_worktree"
   echo "jj_version:      ${jj_version:-<jj not installed>}"
-  echo "ui.paginate:     ${paginate:-<unset — set 'never' for agents>}"
+  echo "ui.paginate:     ${paginate:-<unset — jj pages by default; pass --no-pager>}"
   echo "default_branch:  $default_branch"
   if $shadowed; then
     echo "working_copy:    $wc_state (per git — jj's answer would be the parent's)"

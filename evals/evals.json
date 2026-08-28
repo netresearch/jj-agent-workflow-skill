@@ -5,8 +5,8 @@
     "assertions": [
       {
         "type": "content_regex",
-        "value": "--no-pager|ui\\.paginate",
-        "description": "Avoids the pager that hangs a non-interactive agent (jj pages output through less by default)"
+        "value": "--no-pager",
+        "description": "Avoids the pager that hangs a non-interactive agent with the per-command flag, not by writing ui.paginate into the user's config"
       },
       {
         "type": "content_contains",

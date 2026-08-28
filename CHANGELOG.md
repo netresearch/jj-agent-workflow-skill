@@ -14,6 +14,13 @@ was introduced in 0.3.1; the GitHub Releases for those tags remain the original 
 
 ### Changed
 
+- Agent-safety now relies on the `--no-pager` flag alone. The skill no longer
+  tells agents to run `jj config set --user ui.paginate never`: `--user` writes
+  the human's own config file, outlives the agent session, and takes paging away
+  from their interactive `jj` as well. Reported by @plttn in #25.
+  `jj --config ui.paginate=never <cmd>` is documented as the non-persistent
+  equivalent where a per-command flag is not enough.
+
 ### Fixed
 
 ## [0.3.2] - 2026-08-12
