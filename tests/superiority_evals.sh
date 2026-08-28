@@ -133,10 +133,10 @@ a="$(jj --no-pager log --no-graph -r @ -T change_id 2>/dev/null)"
 jj new "$base" -m B >/dev/null 2>&1
 echo BBB >c.txt
 if jj rebase -s @ -d "$a" >/dev/null 2>&1; then
-  jj --no-pager status 2>/dev/null | grep -qi 'unresolved conflicts' && jj_completed=yes
+  grep -qi 'unresolved conflicts' <<<"$(jj --no-pager status 2>/dev/null)" && jj_completed=yes
 fi
 jj undo >/dev/null 2>&1
-jj --no-pager status 2>/dev/null | grep -qi 'unresolved conflicts' || jj_reversible=yes
+grep -qi 'unresolved conflicts' <<<"$(jj --no-pager status 2>/dev/null)" || jj_reversible=yes
 
 if [[ "$jj_completed" == yes && "$jj_reversible" == yes && "$git_interrupted" == yes ]]; then
   win "S2 conflict handling: jj rebase completed with the conflict recorded (and jj undo reversed it); git rebase halted mid-operation"

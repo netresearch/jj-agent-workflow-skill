@@ -138,9 +138,9 @@ if $shadowed; then
   fi
 elif [[ -n "$jj_root" ]]; then
   st="$(jj --no-pager status 2>/dev/null || true)"
-  if printf '%s' "$st" | grep -qi 'unresolved conflicts'; then
+  if grep -qi 'unresolved conflicts' <<<"$st"; then
     wc_state="conflicted"
-  elif printf '%s' "$st" | grep -qiE 'working copy changes|^[AM] '; then
+  elif grep -qiE 'working copy changes|^[AM] ' <<<"$st"; then
     wc_state="dirty"
   else
     wc_state="clean"

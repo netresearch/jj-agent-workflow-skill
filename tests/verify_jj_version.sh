@@ -43,15 +43,19 @@ claim_bool() {
 }
 
 # hasflag <subcommand words...> -- <flag> — e.g. hasflag git init -- --colocate
-# `--help` exits 0, so the pipeline status is grep's.
+# The output is captured and matched with a herestring, never piped into
+# `grep -q`: grep exits at the first match and closes the pipe, jj then dies of
+# SIGPIPE, and `pipefail` reports that death instead of the match — so the probe
+# answers "flag gone" precisely because the flag was there.
 hasflag() {
-  local args=()
+  local args=() out
   while [[ "$1" != "--" ]]; do
     args+=("$1")
     shift
   done
   shift
-  jj "${args[@]}" --help 2>&1 | grep -q -- "$1"
+  out="$(jj "${args[@]}" --help 2>&1)"
+  grep -q -- "$1" <<<"$out"
 }
 yn() { if "$@"; then echo true; else echo false; fi; }
 
@@ -85,12 +89,12 @@ claim "jj git colocation exists" "jj git colocation is GONE (git-interop.md cite
 git init -q "$T/wt"
 (cd "$T/wt" && git -c user.name=P -c user.email=p@e.co commit -q --allow-empty -m i)
 git -C "$T/wt" worktree add -q "$T/wt/.claude/worktrees/probe" -b probe 2>/dev/null
-# Capture first: `jj git init` exits non-zero here, and `pipefail` would make a
-# `| grep -q` pipeline report that failure instead of the match.
+# Capture first: `jj git init` exits non-zero here, and under `pipefail` its
+# status would be reported instead of the match.
 wt_out="$(cd "$T/wt/.claude/worktrees/probe" && jj git init --colocate 2>&1)"
 claim_bool "colocated init still refuses inside a git worktree" \
   "colocated init inside a git worktree no longer refuses" \
-  "$(printf '%s' "$wt_out" | grep -qi 'inside a Git worktree' && echo true || echo false)"
+  "$(grep -qi 'inside a Git worktree' <<<"$wt_out" && echo true || echo false)"
 
 # ---------- main probe repo ----------
 R="$T/work"
@@ -125,7 +129,7 @@ claim_bool "jj squash --from/--into" "jj squash --from/--into GONE" \
 claim_bool "jj rebase -d" "jj rebase -d GONE" "$(yn hasflag rebase -- "-d")"
 claim_bool "jj rebase --onto/-o alias present" \
   "jj rebase --onto/-o GONE (command-map claims both work)" \
-  "$(jj rebase --help 2>&1 | grep -qE '\-\-onto|\-o,' && echo true || echo false)"
+  "$(grep -qE '\-\-onto|\-o,' <<<"$(jj rebase --help 2>&1)" && echo true || echo false)"
 claim "jj split <path> -m (non-interactive)" "jj split <path> -m FAILED" \
   jj split a.txt -m "feat: split off"
 claim "jj edit <rev>" "jj edit FAILED" jj edit @-
@@ -202,7 +206,7 @@ claim_bool "jj git push --bookmark pushes a NEW bookmark directly" \
   "$(yn git --git-dir="$T/origin.git" show-ref --verify --quiet refs/heads/feat-probe)"
 claim_bool "jj git push still has no --allow-new" \
   "jj git push --allow-new IS BACK (command-map says removed)" \
-  "$(jj git push --help 2>&1 | grep -q -- "--allow-new" && echo false || echo true)"
+  "$(grep -q -- "--allow-new" <<<"$(jj git push --help 2>&1)" && echo false || echo true)"
 
 # Push must still reject an undescribed commit anywhere in the pushed range.
 jj new >/dev/null 2>&1
@@ -211,7 +215,7 @@ jj bookmark create feat-nodesc -r @- >/dev/null 2>&1
 nodesc_out="$(jj git push --bookmark feat-nodesc 2>&1)"
 claim_bool "jj git push still rejects an undescribed commit in the pushed range" \
   "push no longer rejects undescribed commits — pr-handoff.md note is stale" \
-  "$(printf '%s' "$nodesc_out" | grep -qi 'no description' && echo true || echo false)"
+  "$(grep -qi 'no description' <<<"$nodesc_out" && echo true || echo false)"
 jj bookmark delete feat-nodesc >/dev/null 2>&1
 jj edit 'description(substring:"feat: handoff work")' >/dev/null 2>&1
 
@@ -269,7 +273,7 @@ jj new "$base" -m sideB >/dev/null 2>&1
 printf 'BBB\n' >conf.txt
 jj rebase -s @ -d "$sideA" >/dev/null 2>&1
 claim_bool "jj status flags unresolved conflicts" "jj status did NOT flag the conflict" \
-  "$(jj --no-pager status 2>/dev/null | grep -qi 'conflict' && echo true || echo false)"
+  "$(grep -qi 'conflict' <<<"$(jj --no-pager status 2>/dev/null)" && echo true || echo false)"
 claim "jj resolve --list" "jj resolve --list FAILED" jj --no-pager resolve --list
 claim_bool "conflict markers still use the %%%%%%% / +++++++ form" \
   "conflict marker format CHANGED — recovery-playbook.md shows %%%%%%% / +++++++" \

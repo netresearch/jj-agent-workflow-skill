@@ -91,7 +91,7 @@ fi
 
 # 2. A protected/default branch must not be a push target.
 for b in $protected; do
-  if printf '%s\n' "$candidates" | grep -qx "$b"; then
+  if grep -qx "$b" <<<"$candidates"; then
     fails+=("protected branch '${b}' is a push target — do not push it directly")
   fi
 done
