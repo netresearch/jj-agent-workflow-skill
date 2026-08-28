@@ -122,7 +122,7 @@ jj new >/dev/null 2>&1 # empty, undescribed
 jj new >/dev/null 2>&1 # @- is now the empty undescribed change above
 jj bookmark create feat-undescribed -r @- >/dev/null 2>&1
 push_err="$(jj git push --bookmark feat-undescribed 2>&1)"
-if printf '%s' "$push_err" | grep -qi 'no description'; then
+if grep -qi 'no description' <<<"$push_err"; then
   ok "push rejects an undescribed commit (documented in pr-handoff.md)"
 else
   ng "expected 'no description' rejection, got: $(printf '%s' "$push_err" | head -1)"
