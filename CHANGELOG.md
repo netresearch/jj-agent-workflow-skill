@@ -10,6 +10,8 @@ was introduced in 0.3.1; the GitHub Releases for those tags remain the original 
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-09-03
+
 ### Added
 
 ### Changed
@@ -116,7 +118,8 @@ what makes the state destructive rather than merely confusing.
 - Netresearch governance ruleset: security and PR-quality workflows,
   `ARCHITECTURE.md`, split MIT + CC-BY-SA-4.0 licensing.
 
-[Unreleased]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.3...HEAD
+[0.3.3]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.2.0...v0.3.0
