@@ -12,7 +12,7 @@ was introduced in 0.3.1; the GitHub Releases for those tags remain the original 
 
 ### Added
 
-- README: the `/plugin install` step the marketplace section was missing, and a "Without a marketplace" section covering the skills-directory route
+- README: the `/plugin install` step missing from the marketplace section, and a "Without a marketplace" section covering the skills-directory route
 
 ### Changed
 
