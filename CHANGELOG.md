@@ -10,6 +10,14 @@ was introduced in 0.3.1; the GitHub Releases for those tags remain the original 
 
 ## [Unreleased]
 
+### Added
+
+- README: the `/plugin install` step missing from the marketplace section, and a "Without a marketplace" section covering the skills-directory route
+
+### Changed
+
+- `@netresearch/agent-skill-coordinator` peer dependency accepts `^0.2.0` alongside `^0.1`
+
 ## [0.3.3] - 2026-09-03
 
 ### Added
