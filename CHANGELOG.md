@@ -10,6 +10,8 @@ was introduced in 0.3.1; the GitHub Releases for those tags remain the original 
 
 ## [Unreleased]
 
+## [0.3.4] - 2026-09-11
+
 ### Added
 
 - README: the `/plugin install` step missing from the marketplace section, and a "Without a marketplace" section covering the skills-directory route
@@ -126,7 +128,8 @@ what makes the state destructive rather than merely confusing.
 - Netresearch governance ruleset: security and PR-quality workflows,
   `ARCHITECTURE.md`, split MIT + CC-BY-SA-4.0 licensing.
 
-[Unreleased]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.4...HEAD
+[0.3.4]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/netresearch/jujutsu-workflow-skill/compare/v0.3.0...v0.3.1
